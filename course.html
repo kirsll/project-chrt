@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Карточка курса — Bravelearn courses</title>
+    <link rel="icon" type="image/x-icon" href="./static/logo.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/index.css">
+</head>
+<body class="course-body catalog-body">
+<div id="page-transition" class="page-transition page-transition--visible">
+    <div class="page-transition__logo">Bravelearn.</div>
+</div>
+<section class="main main--catalog">
+    <div class="header">
+        <div class="logo">
+            <div class="p">Bravelearn.</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог курсов</a></li>
+                <li><a href="profile.html">Профиль</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="info info--compact">
+        <p id="course-title">Курс</p>
+        <p id="course-description">Описание курса будет загружено...</p>
+    </div>
+</section>
+
+<main class="catalog">
+    <section class="catalog__list">
+        <div class="course-detail">
+            <div class="course-detail__image">
+                <img id="course-image" src="" alt="Курс">
+            </div>
+            <div class="course-detail__content">
+                <div id="course-meta" class="course-detail__meta"></div>
+                <p id="course-long-description" class="course-detail__description"></p>
+
+                <div class="course-detail__extra">
+                    <h3 class="course-detail__heading">О программе курса</h3>
+                    <p class="course-detail__paragraph">Практические уроки, домашние задания с обратной связью и итоговый проект для портфолио.</p>
+                    <div class="course-detail__tags">
+                        <span>Онлайн‑формат</span>
+                        <span>Практика на реальных задачах</span>
+                        <span>Поддержка наставников</span>
+                    </div>
+                </div>
+
+                <div class="course-detail__download">
+                    <a id="course-download" class="btn btn--primary course-detail__download-btn" href="#">Скачать материалы курса</a>
+                    <a href="catalog.html" class="course-detail__back-link">← Вернуться в каталог курсов</a>
+                </div>
+            </div>
+        </div>
+    </section>
+</main>
+
+<footer id="contact" class="footer">
+    <div class="footer__top">
+        <div class="footer__brand">
+            <div class="logo"><div class="p">Bravelearn.</div></div>
+        </div>
+        <div class="footer__contact">
+            <div>
+                <span>Телефон</span>
+                <strong>+7 951 787 46 28</strong>
+            </div>
+            <div>
+                <span>Поддержка</span>
+                <strong>support@bravelearn.courses</strong>
+            </div>
+        </div>
+    </div>
+    <div class="footer__bottom">
+        <span>2025 Bravelearn courses, All Rights Reserved</span>
+    </div>
+</footer>
+<script type="text/javascript" src="/eel.js"></script>
+<script type="text/javascript" src="./static/app.js"></script>
+</body>
+</html>

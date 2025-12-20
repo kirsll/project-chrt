@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Профиль — Bravelearn courses</title>
+    <link rel="icon" type="image/x-icon" href="./static/logo.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/index.css">
+</head>
+<body class="profile-body catalog-body">
+<div id="page-transition" class="page-transition page-transition--visible">
+    <div class="page-transition__logo">Bravelearn.</div>
+</div>
+<section class="main main--catalog">
+    <div class="header">
+        <div class="logo">
+            <div class="p">Bravelearn.</div>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Главная</a></li>
+                <li><a href="catalog.html">Каталог</a></li>
+                <li><a class="nav__catalog nav__catalog--active" href="profile.html">Профиль</a></li>
+            </ul>
+        </nav>
+    </div>
+    <div class="info info--compact">
+        <p>Профиль пользователя</p>
+        <p>Здесь отображаются ваши данные и избранные курсы.</p>
+    </div>
+</section>
+
+<main class="catalog">
+    <section id="profile-login-block" class="catalog__filters">
+        <div class="catalog__filters-inner">
+            <form id="login-form" class="profile-login-form">
+                <div>
+                    <label>Логин</label>
+                    <input type="text" name="username" required>
+                </div>
+                <div>
+                    <label>Пароль</label>
+                    <input type="password" name="password" required>
+                </div>
+                <button class="btn btn--secondary" type="submit">Войти / Зарегистрироваться</button>
+                <div id="login-error" class="profile-login-error"></div>
+            </form>
+        </div>
+    </section>
+
+    <section id="profile-data-block" class="catalog__list" style="display:none;">
+        <div class="profile-header">
+            <div class="profile-avatar"></div>
+            <div class="profile-info">
+                <h2 id="profile-username">User</h2>
+                <div class="profile-password-row">
+                    <label>Пароль</label>
+                    <input id="profile-password" type="password" readonly>
+                    <button id="toggle-password-visibility" class="btn btn--secondary" type="button">Посмотреть</button>
+                </div>
+            </div>
+        </div>
+
+        <h3 style="margin-top: 24px; margin-bottom: 12px;">Избранные курсы</h3>
+        <div id="profile-favorites" class="profile-favorites-empty">
+            Пока нет избранных курсов. Отметьте их на странице каталога.
+        </div>
+    </section>
+</main>
+
+<footer id="contact" class="footer">
+    <div class="footer__top">
+        <div class="footer__brand">
+            <div class="logo"><div class="p">Bravelearn.</div></div>
+        </div>
+        <div class="footer__contact">
+            <div>
+                <span>Телефон</span>
+                <strong>+7 951 787 46 28</strong>
+            </div>
+            <div>
+                <span>Поддержка</span>
+                <strong>support@bravelearn.courses</strong>
+            </div>
+        </div>
+    </div>
+    <div class="footer__bottom">
+        <span>2025 Bravelearn courses, All Rights Reserved</span>
+    </div>
+</footer>
+<script type="text/javascript" src="/eel.js"></script>
+<script type="text/javascript" src="./static/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Каталог курсов — Bravelearn courses</title>
+    <link rel="icon" type="image/x-icon" href="./static/logo.ico">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/index.css">
+</head>
+<body class="catalog-body">
+    <div id="page-transition" class="page-transition page-transition--visible">
+        <div class="page-transition__logo">Bravelearn.</div>
+    </div>
+    <section class="main main--catalog">
+        <div class="header">
+            <div class="logo">
+                <div class="p">Bravelearn.</div>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Главная</a></li>
+                    <li><a href="#filters">Направления</a></li>
+                    <li><a href="#contact">Помощь</a></li>
+                    <li><a class="nav__catalog nav__catalog--active" href="catalog.html">Каталог курсов</a></li>
+                </ul>
+            </nav>
+        </div>
+        <div class="info info--compact">
+            <p>Каталог онлайн‑курсов</p>
+            <p>Выберите направление и уровень, чтобы найти подходящую программу обучения.</p>
+        </div>
+    </section>
+
+    <main class="catalog">
+        <section id="filters" class="catalog__filters">
+            <div class="catalog__filters-inner">
+                <div class="catalog__chips">
+                    <button class="chip chip--active">Все направления</button>
+                    <button class="chip">Программирование</button>
+                    <button class="chip">Дизайн</button>
+                    <button class="chip">Аналитика</button>
+                    <button class="chip">Маркетинг</button>
+                </div>
+                <div class="catalog__selects">
+                    <select>
+                        <option>Уровень: любой</option>
+                        <option>Начинающий</option>
+                        <option>Продолжающий</option>
+                        <option>Интенсив</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <section class="catalog__list">
+            <div class="courses-grid courses-grid--catalog">
+                <article class="course-card" data-course-id="1">
+                    <div class="course-card__badge">Программирование</div>
+                    <div class="course-card__image">
+                        <img src="./static/photo1.jpg" alt="Frontend">
+                    </div>
+                    <div class="course-card__body">
+                        <h3>Frontend‑разработчик с нуля</h3>
+                        <p>Освойте HTML, CSS, JavaScript и создайте адаптивный сайт‑портфолио.</p>
+                        <div class="course-card__meta">
+                            <span>4,5 месяца</span>
+                            <span>С ментором</span>
+                        </div>
+                        <div class="course-card__actions">
+                            <button class="course-card__fav" type="button">В избранное</button>
+                            <button class="btn btn--secondary course-card__details" type="button">Подробнее о курсе</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="course-card" data-course-id="4">
+                    <div class="course-card__badge">Программирование</div>
+                    <div class="course-card__image">
+                        <img src="./static/photo2.jpg" alt="Backend">
+                    </div>
+                    <div class="course-card__body">
+                        <h3>Backend на Python</h3>
+                        <p>Django, REST API, работа с базами данных и деплой pet‑проекта.</p>
+                        <div class="course-card__meta">
+                            <span>5 месяцев</span>
+                            <span>Продолжающий</span>
+                        </div>
+                        <div class="course-card__actions">
+                            <button class="course-card__fav" type="button">В избранное</button>
+                            <button class="btn btn--secondary course-card__details" type="button">Подробнее о курсе</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="course-card" data-course-id="2">
+                    <div class="course-card__badge">Дизайн</div>
+                    <div class="course-card__image">
+                        <img src="./static/photo3.jpg" alt="UX/UI">
+                    </div>
+                    <div class="course-card__body">
+                        <h3>UX/UI‑дизайнер</h3>
+                        <p>Проработка пользовательских сценариев, прототипирование и визуальный стиль.</p>
+                        <div class="course-card__meta">
+                            <span>3 месяца</span>
+                            <span>Начинающий</span>
+                        </div>
+                        <div class="course-card__actions">
+                            <button class="course-card__fav" type="button">В избранное</button>
+                            <button class="btn btn--secondary course-card__details" type="button">Подробнее о курсе</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="course-card" data-course-id="3">
+                    <div class="course-card__badge">Аналитика</div>
+                    <div class="course-card__image">
+                        <img src="./static/photo4.jpg" alt="Data analytics">
+                    </div>
+                    <div class="course-card__body">
+                        <h3>Аналитик данных</h3>
+                        <p>SQL, BI‑инструменты и построение дашбордов для бизнеса.</p>
+                        <div class="course-card__meta">
+                            <span>4 месяца</span>
+                            <span>С ментором</span>
+                        </div>
+                        <div class="course-card__actions">
+                            <button class="course-card__fav" type="button">В избранное</button>
+                            <button class="btn btn--secondary course-card__details" type="button">Подробнее о курсе</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="course-card" data-course-id="5">
+                    <div class="course-card__badge">Маркетинг</div>
+                    <div class="course-card__image">
+                        <img src="./static/photo5.jpg" alt="Digital marketing">
+                    </div>
+                    <div class="course-card__body">
+                        <h3>Digital‑маркетолог</h3>
+                        <p>Стратегия продвижения, таргет и аналитика рекламных кампаний.</p>
+                        <div class="course-card__meta">
+                            <span>3,5 месяца</span>
+                            <span>Продолжающий</span>
+                        </div>
+                        <div class="course-card__actions">
+                            <button class="course-card__fav" type="button">В избранное</button>
+                            <button class="btn btn--secondary course-card__details" type="button">Подробнее о курсе</button>
+                        </div>
+                    </div>
+                </article>
+
+                <article class="course-card" data-course-id="6">
+                    <div class="course-card__badge">Программирование</div>
+                    <div class="course-card__image">
+                        <img src="./static/photo6.jpg" alt="Fullstack">
+                    </div>
+                    <div class="course-card__body">
+                        <h3>Fullstack‑разработчик</h3>
+                        <p>Совмещайте frontend и backend, собирая комплексные веб‑приложения.</p>
+                        <div class="course-card__meta">
+                            <span>6 месяцев</span>
+                            <span>Интенсив</span>
+                        </div>
+                        <div class="course-card__actions">
+                            <button class="course-card__fav" type="button">В избранное</button>
+                            <button class="btn btn--secondary course-card__details" type="button">Подробнее о курсе</button>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer id="contact" class="footer">
+        <div class="footer__top">
+            <div class="footer__brand">
+                <div class="logo"><div class="p">Bravelearn.</div></div>
+            </div>
+            <div class="footer__contact">
+                <div>
+                    <span>Телефон</span>
+                    <strong>+7 951 787 46 28</strong>
+                </div>
+                <div>
+                    <span>Поддержка</span>
+                    <strong>support@bravelearn.courses</strong>
+                </div>
+            </div>
+        </div>
+        <div class="footer__bottom">
+            <span>2025 Bravelearn courses, All Rights Reserved</span>
+        </div>
+    </footer>
+    <script type="text/javascript" src="/eel.js"></script>
+    <script type="text/javascript" src="./static/app.js"></script>
+</body>
+</html>

@@ -7,6 +7,9 @@
     <link rel="icon" type="image/x-icon" href="./static/logo.ico">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="./styles/index.css">
+    <!-- CodeMirror для редактора кода заданий -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/theme/dracula.min.css" />
 </head>
 <body class="course-body catalog-body">
 <div id="page-transition" class="page-transition page-transition--visible">
@@ -52,10 +55,54 @@
                 </div>
 
                 <div class="course-detail__download">
-                    <a id="course-download" class="btn btn--primary course-detail__download-btn" href="#">Скачать материалы курса</a>
+                    <div class="course-detail__download-buttons">
+                        <a id="course-download" class="btn btn--primary course-detail__download-btn" href="#">Скачать материалы курса</a>
+                        <a href="#course-learning" class="btn btn--secondary course-detail__start-btn" data-no-fade="true">Перейти к обучению</a>
+                    </div>
                     <a href="catalog.html" class="course-detail__back-link">← Вернуться в каталог курсов</a>
                 </div>
             </div>
+        </div>
+        <div id="course-learning" class="course-learning">
+            <aside class="course-learning__sidebar">
+                <h3>Программа курса</h3>
+                <div class="course-learning__progress">
+                    <span>Прогресс по курсу:</span>
+                    <div class="course-learning__progress-bar">
+                        <div id="course-progress-bar-fill" class="course-learning__progress-fill"></div>
+                    </div>
+                    <span id="course-progress-text" class="course-learning__progress-text">0%</span>
+                </div>
+                <div id="course-lessons-list" class="course-learning__lessons">
+                    <!-- Список модулей и уроков будет подставлен JS -->
+                </div>
+            </aside>
+            <section class="course-learning__content">
+                <h2 id="lesson-title">Выберите урок, чтобы начать обучение</h2>
+                <div id="lesson-content" class="course-learning__lesson-content">
+                    <!-- Контент урока -->
+                </div>
+                <div id="lesson-task-block" class="course-learning__task" style="display:none;">
+                    <h3 id="task-title">Задание</h3>
+                    <div id="task-description" class="course-learning__task-description"></div>
+                    <label for="task-code" class="course-learning__task-label">Ваш код на Python:</label>
+                    <textarea id="task-code" class="course-learning__task-code" rows="10" spellcheck="false"></textarea>
+                    <div class="course-learning__task-actions">
+                        <button id="task-run" class="btn btn--primary" type="button">Запустить код</button>
+                        <span id="task-status" class="course-learning__task-status"></span>
+                    </div>
+                    <div class="course-learning__task-output">
+                        <h4>Результат выполнения</h4>
+                        <pre id="task-output"></pre>
+                    </div>
+                </div>
+                <div class="course-learning__lesson-actions">
+                    <button id="lesson-prev" class="btn btn--secondary" type="button">← Предыдущий урок</button>
+                    <button id="lesson-complete" class="btn btn--primary" type="button">Отметить урок пройденным</button>
+                    <button id="lesson-next" class="btn btn--secondary" type="button">Следующий урок →</button>
+                </div>
+                <div id="lesson-status" class="course-learning__lesson-status"></div>
+            </section>
         </div>
     </section>
 </main>
@@ -81,6 +128,9 @@
     </div>
 </footer>
 <script type="text/javascript" src="/eel.js"></script>
+<!-- CodeMirror scripts for code editor in tasks -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/codemirror.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.15/mode/python/python.min.js"></script>
 <script type="text/javascript" src="./static/app.js"></script>
 </body>
 </html>

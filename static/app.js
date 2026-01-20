@@ -15,11 +15,32 @@ async function apiGetCourse(courseId) {
   return await eel.api_get_course(courseId)();
 }
 
+async function apiGetCourseStructure(courseId) {
+  return await eel.api_get_course_structure(courseId)();
+}
+
+async function apiGetLesson(lessonId) {
+  return await eel.api_get_lesson(lessonId)();
+}
+
+async function apiMarkLessonCompleted(lessonId) {
+  return await eel.api_mark_lesson_completed(lessonId)();
+}
+
+async function apiRunPython(code, taskId = null) {
+  return await eel.api_run_python(code, taskId)();
+}
+
 async function apiToggleFavorite(courseId) {
   return await eel.api_toggle_favorite(courseId)();
 }
 
 let catalogCourses = [];
+let courseStructure = null;
+let courseLessonsFlat = [];
+let currentLessonId = null;
+let currentTaskId = null;
+let taskEditor = null;
 
 function attachLoginHandlers() {
   const form = document.querySelector('#login-form');
@@ -290,6 +311,216 @@ async function initCoursePage() {
   if (downloadBtn && data.materials_path) {
     downloadBtn.href = data.materials_path;
     downloadBtn.download = '';
+  }
+
+  courseStructure = await apiGetCourseStructure(id);
+  if (!courseStructure || !courseStructure.modules) return;
+
+  const lessonsContainer = document.querySelector('#course-lessons-list');
+  const progressFill = document.querySelector('#course-progress-bar-fill');
+  const progressText = document.querySelector('#course-progress-text');
+
+  if (progressFill && typeof courseStructure.progress_percent === 'number') {
+    progressFill.style.width = `${courseStructure.progress_percent}%`;
+  }
+  if (progressText) {
+    progressText.textContent = `${courseStructure.progress_percent || 0}%`;
+  }
+
+  courseLessonsFlat = [];
+  if (lessonsContainer) {
+    lessonsContainer.innerHTML = '';
+    courseStructure.modules.forEach((mod) => {
+      const moduleEl = document.createElement('div');
+      moduleEl.className = 'course-learning__module';
+      const moduleTitle = document.createElement('h4');
+      moduleTitle.textContent = mod.title;
+      moduleEl.appendChild(moduleTitle);
+
+      const ul = document.createElement('ul');
+      ul.className = 'course-learning__lessons-list';
+      (mod.lessons || []).forEach((lesson) => {
+        courseLessonsFlat.push({ id: lesson.id, title: lesson.title, moduleId: mod.id });
+        const li = document.createElement('li');
+        li.className = 'course-learning__lesson-item';
+        li.dataset.lessonId = String(lesson.id);
+        if (lesson.is_completed) {
+          li.classList.add('course-learning__lesson-item--completed');
+        }
+        li.innerHTML = `
+          <button type="button" class="course-learning__lesson-button">
+            <span class="course-learning__lesson-title">${lesson.title}</span>
+            ${lesson.is_completed ? '<span class="course-learning__lesson-status-badge">Пройдено</span>' : ''}
+          </button>
+        `;
+        li.querySelector('button').addEventListener('click', () => {
+          loadLesson(lesson.id);
+        });
+        ul.appendChild(li);
+      });
+
+      moduleEl.appendChild(ul);
+      lessonsContainer.appendChild(moduleEl);
+    });
+  }
+
+  let firstLessonId = null;
+  let firstUncompletedId = null;
+  courseStructure.modules.forEach((mod) => {
+    (mod.lessons || []).forEach((lesson) => {
+      if (!firstLessonId) firstLessonId = lesson.id;
+      if (!lesson.is_completed && !firstUncompletedId) firstUncompletedId = lesson.id;
+    });
+  });
+
+  const startLessonId = firstUncompletedId || firstLessonId;
+  if (startLessonId) {
+    await loadLesson(startLessonId);
+  }
+
+  const prevBtn = document.querySelector('#lesson-prev');
+  const nextBtn = document.querySelector('#lesson-next');
+  const completeBtn = document.querySelector('#lesson-complete');
+
+  if (prevBtn) {
+    prevBtn.addEventListener('click', () => {
+      if (!currentLessonId || !courseLessonsFlat.length) return;
+      const idx = courseLessonsFlat.findIndex((l) => l.id === currentLessonId);
+      if (idx > 0) {
+        loadLesson(courseLessonsFlat[idx - 1].id);
+      }
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      if (!currentLessonId || !courseLessonsFlat.length) return;
+      const idx = courseLessonsFlat.findIndex((l) => l.id === currentLessonId);
+      if (idx >= 0 && idx < courseLessonsFlat.length - 1) {
+        loadLesson(courseLessonsFlat[idx + 1].id);
+      }
+    });
+  }
+
+  if (completeBtn) {
+    completeBtn.addEventListener('click', async () => {
+      if (!currentLessonId) return;
+      const statusEl = document.querySelector('#lesson-status');
+      if (statusEl) statusEl.textContent = 'Сохраняем прогресс...';
+      const res = await apiMarkLessonCompleted(currentLessonId);
+      if (!res || !res.ok) {
+        if (statusEl) statusEl.textContent = res && res.error ? res.error : 'Не удалось сохранить прогресс';
+        return;
+      }
+      if (statusEl) statusEl.textContent = 'Урок отмечен как пройденный';
+
+      const listItem = document.querySelector(`.course-learning__lesson-item[data-lesson-id="${currentLessonId}"]`);
+      if (listItem) {
+        listItem.classList.add('course-learning__lesson-item--completed');
+        const badge = listItem.querySelector('.course-learning__lesson-status-badge');
+        if (!badge) {
+          const btn = listItem.querySelector('button');
+          if (btn) {
+            const span = document.createElement('span');
+            span.className = 'course-learning__lesson-status-badge';
+            span.textContent = 'Пройдено';
+            btn.appendChild(span);
+          }
+        }
+      }
+
+      courseStructure = await apiGetCourseStructure(id);
+      if (courseStructure && typeof courseStructure.progress_percent === 'number') {
+        if (progressFill) progressFill.style.width = `${courseStructure.progress_percent}%`;
+        if (progressText) progressText.textContent = `${courseStructure.progress_percent}%`;
+      }
+    });
+  }
+}
+
+async function loadLesson(lessonId) {
+  const data = await apiGetLesson(lessonId);
+  if (!data) return;
+  currentLessonId = lessonId;
+
+  const titleEl = document.querySelector('#lesson-title');
+  const contentEl = document.querySelector('#lesson-content');
+  const statusEl = document.querySelector('#lesson-status');
+  const lessonItemEls = document.querySelectorAll('.course-learning__lesson-item');
+
+  if (titleEl) titleEl.textContent = data.title;
+  if (contentEl) contentEl.innerHTML = data.content_html || '';
+  if (statusEl) {
+    statusEl.textContent = data.is_completed ? 'Урок уже отмечен как пройденный' : '';
+  }
+
+  lessonItemEls.forEach((li) => {
+    if (parseInt(li.dataset.lessonId, 10) === lessonId) {
+      li.classList.add('course-learning__lesson-item--active');
+    } else {
+      li.classList.remove('course-learning__lesson-item--active');
+    }
+  });
+
+  const taskBlock = document.querySelector('#lesson-task-block');
+  const taskTitleEl = document.querySelector('#task-title');
+  const taskDescEl = document.querySelector('#task-description');
+  const taskCodeEl = document.querySelector('#task-code');
+  const taskStatusEl = document.querySelector('#task-status');
+  const taskOutputEl = document.querySelector('#task-output');
+  const runBtn = document.querySelector('#task-run');
+
+  if (!data.task) {
+    if (taskBlock) taskBlock.style.display = 'none';
+    currentTaskId = null;
+    return;
+  }
+
+  currentTaskId = data.task.id;
+  if (taskBlock) taskBlock.style.display = 'block';
+  if (taskTitleEl) taskTitleEl.textContent = data.task.title;
+  if (taskDescEl) taskDescEl.innerHTML = data.task.description || '';
+  if (taskCodeEl) taskCodeEl.value = data.task.starter_code || '';
+  if (taskStatusEl) taskStatusEl.textContent = '';
+  if (taskOutputEl) taskOutputEl.textContent = '';
+
+  // Инициализируем или обновляем CodeMirror над textarea
+  if (window.CodeMirror && taskCodeEl) {
+    if (!taskEditor) {
+      taskEditor = window.CodeMirror.fromTextArea(taskCodeEl, {
+        mode: 'python',
+        theme: 'dracula',
+        lineNumbers: true,
+        indentUnit: 4,
+        tabSize: 4,
+        indentWithTabs: false,
+        lineWrapping: true,
+        autofocus: false,
+      });
+    }
+    taskEditor.setValue(data.task.starter_code || '');
+    taskEditor.focus();
+  }
+
+  if (runBtn) {
+    runBtn.onclick = async () => {
+      if (!taskCodeEl) return;
+      const code = taskEditor ? taskEditor.getValue() : taskCodeEl.value;
+      if (!code.trim()) return;
+      if (taskStatusEl) taskStatusEl.textContent = 'Запускаем код...';
+      const res = await apiRunPython(code, currentTaskId);
+      if (!res || !res.ok) {
+        if (taskStatusEl) taskStatusEl.textContent = res && res.error ? res.error : 'Ошибка при выполнении кода';
+        return;
+      }
+      if (taskOutputEl) {
+        const out = `${res.stdout || ''}${res.stderr ? `\n[stderr]\n${res.stderr}` : ''}`.trim();
+        taskOutputEl.textContent = out || '(нет вывода)';
+      }
+      if (taskStatusEl) {
+        taskStatusEl.textContent = res.is_passed ? 'Тесты пройдены 🎉' : 'Тесты не пройдены, попробуйте ещё раз';
+      }
+    };
   }
 }
 
